@@ -154,13 +154,12 @@ static struct key bindings[] = {
 	/* First entry */
 	{ KEY_HOME,       SEL_HOME },
 	{ 'g',            SEL_HOME },
-	{ CONTROL('A'),   SEL_HOME },
 	/* Last entry */
 	{ KEY_END,        SEL_END },
 	{ 'G',            SEL_END },
 	{ CONTROL('E'),   SEL_END },
 	/* Go to first file */
-	{ '\'',           SEL_FIRST },
+	{ 'f',           SEL_FIRST },
 	/* Jump to an entry number/offset */
 	{ 'J',            SEL_JUMP },
 	/* HOME */
@@ -172,6 +171,7 @@ static struct key bindings[] = {
 	/* Go to / */
 	{ '`',            SEL_CDROOT },
 	/* Leader key */
+	{ '\'',            SEL_BMOPEN },
 	{ 'b',            SEL_BMOPEN },
 	{ CONTROL('_'),   SEL_BMOPEN },
 	/* Connect to server over SSHFS */
@@ -194,24 +194,23 @@ static struct key bindings[] = {
 	/* Mark a path to visit later */
 	{ ',',            SEL_MARK },
 	/* Create a bookmark */
-	{ 'B',            SEL_BMARK },
+	{ 'm',            SEL_BMARK },
 	/* Filter */
 	{ '/',            SEL_FLTR },
 	/* Toggle filter mode */
-	{ CONTROL('N'),   SEL_MFLTR },
+	{ CONTROL('F'),   SEL_MFLTR },
 	/* Toggle hide .dot files */
 	{ '.',            SEL_HIDDEN },
 	/* Detailed listing */
 	{ 'd',            SEL_DETAIL },
 	/* File details */
-	{ 'f',            SEL_STATS },
-	{ CONTROL('F'),   SEL_STATS },
+	{ ('F'),   SEL_STATS },
 	/* Toggle executable status */
 	{ '*',            SEL_CHMODX },
 	/* Create archive */
 	{ 'z',            SEL_ARCHIVE },
 	/* Sort toggles */
-	{ 't',            SEL_SORT },
+	{ 's',            SEL_SORT },
 	{ CONTROL('T'),   SEL_SORT },
 	/* Redraw window */
 	{ CONTROL('L'),   SEL_REDRAW },
@@ -223,30 +222,29 @@ static struct key bindings[] = {
 	/* Select all files in current dir */
 	{ 'a',            SEL_SELALL },
 	/* Invert selection in current dir */
-	{ 'A',            SEL_SELINV },
+	{ CONTROL('A'),   SEL_SELINV },
 	/* List, edit selection */
 	{ 'E',            SEL_SELEDIT },
 	/* Copy from selection buffer */
 	{ 'p',            SEL_CP },
 	{ CONTROL('P'),   SEL_CP },
 	/* Move from selection buffer */
-	{ 'v',            SEL_MV },
 	{ CONTROL('V'),   SEL_MV },
 	/* Copy/move from selection buffer and rename */
 	{ 'w',            SEL_CPMVAS },
 	{ CONTROL('W'),   SEL_CPMVAS },
 	/* Delete from selection buffer */
-	{ 'x',            SEL_RM },
+	{ KEY_DC,            SEL_RM },
 	{ CONTROL('X'),   SEL_RM },
 	/* Open in a custom application */
 	{ 'o',            SEL_OPENWITH },
 	{ CONTROL('O'),   SEL_OPENWITH },
 	/* Create a new file */
-	{ 'n',            SEL_NEW },
+	{ CONTROL('N'),       SEL_NEW },
 	/* Show rename prompt */
-	{ CONTROL('R'),   SEL_RENAME },
+	{ 'A',              SEL_RENAME },
 	/* Rename contents of current dir */
-	{ 'r',            SEL_RENAMEMUL },
+	{ CONTROL('R'),  SEL_RENAMEMUL },
 	/* Disconnect a SSHFS mount point */
 	{ 'u',            SEL_UMOUNT },
 	/* Show help */
@@ -260,6 +258,7 @@ static struct key bindings[] = {
 	/* Run command */
 	{ '!',            SEL_SHELL },
 	{ CONTROL(']'),   SEL_SHELL },
+	{ 'S',   SEL_SHELL },
 	/* Launcher */
 	{ '=',            SEL_LAUNCH },
 	/* Show command prompt */
@@ -267,19 +266,19 @@ static struct key bindings[] = {
 	/* Lock screen */
 	{ '0',            SEL_LOCK },
 	/* Manage sessions */
-	{ 's',            SEL_SESSIONS },
+	{ CONTROL('S'),  SEL_SESSIONS },
 	/* Export list */
 	{ '>',            SEL_EXPORT },
 	/* Set time type */
 	{ 'T',            SEL_TIMETYPE },
 	/* Quit a context */
-	{ 'q',            SEL_QUITCTX },
+	{ 'Q',            SEL_QUITCTX },
 	/* Change dir on quit */
-	{ CONTROL('G'),   SEL_QUITCD },
+	{ 'q',   SEL_QUITCD },
 	/* Quit */
 	{ CONTROL('Q'),   SEL_QUIT },
 	/* Quit with an error code */
-	{ 'Q',            SEL_QUITERR },
+	{ CONTROL('G'),   SEL_QUITERR },
 #ifndef NOMOUSE
 	{ KEY_MOUSE,      SEL_CLICK },
 #endif

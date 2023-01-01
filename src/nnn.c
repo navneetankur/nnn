@@ -7805,6 +7805,34 @@ nochange:
 				goto nochange;
 			cd = FALSE;
 			goto begin;
+		case SEL_COMMAND:
+		{
+			DPRINTF_D("sel command called");
+			char *cmdline = xreadline(NULL,":");
+			DPRINTF_S(cmdline);
+			int cmd_ret = -8657;
+			if(strncmp(cmdline, "cd ", 3)) { //not cd
+				cmd_ret = spawn(shell, "-c", cmdline, NULL, F_CLI);
+			}
+			else
+			{ // cd; this part is mostly copied from sel_cdhome
+				realpath(cmdline+3, newpath);
+				g_state.selbm = 0;
+				if (chdir(newpath) == -1)
+				{
+					presel = MSGWAIT;
+					goto nochange;
+				}
+				/* SEL_CDLAST: dir pointing to lastdir */
+				// xstrsncpy(newpath, dir, PATH_MAX); // fallthrough
+				/* In list mode, retain the last file name to highlight it, if possible */
+				cdprep(lastdir, listpath && sel == SEL_CDLAST ? NULL : lastname, path, newpath)
+					? (presel = FILTER) : (watch = TRUE);
+				goto begin;
+			}
+			DPRINTF_D(cmd_ret);
+			break;
+		}
 		case SEL_QUITCTX: // fallthrough
 		case SEL_QUITCD: // fallthrough
 		case SEL_QUIT:

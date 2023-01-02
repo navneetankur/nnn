@@ -7807,12 +7807,16 @@ nochange:
 			goto begin;
 		case SEL_COMMAND:
 		{
-			DPRINTF_D("sel command called");
 			char *cmdline = xreadline(NULL,":");
 			DPRINTF_S(cmdline);
-			int cmd_ret = -8657;
 			if(strncmp(cmdline, "cd ", 3)) { //not cd
-				cmd_ret = spawn(shell, "-c", cmdline, NULL, F_CLI);
+				int cmd_ret = spawn(shell, "-c", cmdline, NULL, F_CLI);
+				if(cmd_ret != 0) {
+					//reusing cmdline buffer here.
+					sprintf(cmdline, "Failed: %d", cmd_ret);
+					printmsg(cmdline);
+					goto nochange;
+				}
 			}
 			else
 			{ // cd; this part is mostly copied from sel_cdhome
@@ -7830,7 +7834,6 @@ nochange:
 					? (presel = FILTER) : (watch = TRUE);
 				goto begin;
 			}
-			DPRINTF_D(cmd_ret);
 			break;
 		}
 		case SEL_QUITCTX: // fallthrough

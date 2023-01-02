@@ -7820,7 +7820,10 @@ nochange:
 			}
 			else
 			{ // cd; this part is mostly copied from sel_cdhome
-				realpath(cmdline+3, newpath);
+				if(!realpath(cmdline+3, newpath)) {
+					printwarn(&presel);
+					goto nochange;
+				}
 				g_state.selbm = 0;
 				if (chdir(newpath) == -1)
 				{

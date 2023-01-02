@@ -7,7 +7,7 @@
 # Contributor: John Jenkins <twodopeshaggy@gmail.com>
 
 pkgname=nnn-navn
-pkgver=4.7
+pkgver=4.7.r5.g70aabc14
 pkgrel=1
 pkgdesc="The fastest terminal file manager ever written."
 arch=('x86_64')
@@ -37,16 +37,16 @@ pkgver() {
 }
 
 prepare() {
-    sed -i 's/install: all/install:/' "${pkgname}-${pkgver}/Makefile"
+    sed -i 's/install: all/install:/' "nnn/Makefile"
 }
 
 build() {
-    cd "${pkgname}-${pkgver}"
+    cd "nnn"
     make
 }
 
 package() {
-    cd "${pkgname}-${pkgver}"
+    cd "nnn"
     make DESTDIR="${pkgdir}" PREFIX=/usr install
     make DESTDIR="${pkgdir}" PREFIX=/usr install-desktop
 

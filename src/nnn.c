@@ -4942,13 +4942,17 @@ static size_t handle_bookmark(const char *bmark, char *newpath)
 static void add_bookmark(char *path, char *newpath, int *presel)
 {
 	char *dir = xbasename(path);
-
 	dir = xreadline(dir[0] ? dir : NULL, messages[MSG_BM_NAME]);
 	if (dir && *dir) {
 		size_t r = mkpath(cfgpath, toks[TOK_BM], newpath);
 
 		newpath[r - 1] = '/';
 		xstrsncpy(newpath + r, dir, PATH_MAX - r);
+		struct stat buf;
+		int x = lstat (newpath, &buf);
+		if (x == 0 && S_ISLNK(buf.st_mode)) {
+			unlink(newpath);
+		}
 		printwait((symlink(path, newpath) == -1) ? strerror(errno) : newpath, presel);
 	} else
 		printwait(messages[MSG_CANCEL], presel);

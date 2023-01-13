@@ -1,9 +1,13 @@
-Forked changes: Added ability to run shell command inside nnn by `:` key.
+Forked changes: 
+Added ability to run shell command inside nnn by `:` key.
+Make bookmark to dir work on only one character like in vim.
+
 example
 `:mkdir "new folder"`
 `:cd new folder`
 Commands other than cd is passed to shell.
 cd command's argument should not be in quotes.
+
 
 <h3 align="center"><img src="misc/logo/logo-128x128.png" alt="nnn"><br>nnn - <i>Supercharge your productivity!</i></h3>
 

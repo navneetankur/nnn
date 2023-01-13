@@ -4933,7 +4933,8 @@ static size_t handle_bookmark(const char *bmark, char *newpath)
 		struct stat sbuf;
 		int x = lstat (g_buf, &sbuf);
 		if (x == 0 && S_ISLNK(sbuf.st_mode)) {
-			realpath(g_buf, newpath);
+			int end = readlink(g_buf,newpath,PATH_MAX);
+			newpath[end] = '\0';
 		}
 	}
 

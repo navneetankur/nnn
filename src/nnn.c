@@ -7821,6 +7821,8 @@ nochange:
 			goto begin;
 		case SEL_COMMAND:
 		{
+			//copied from handle_cmd
+			endselection(FALSE);
 			setexports();
 			char *cmdline = xreadline(NULL,":");
 			DPRINTF_S(cmdline);

@@ -45,7 +45,7 @@ build() {
 	if [ "$CARCH" = "aarch64" -o "$CARCH" = "armv7l" ]; then
 		make O_NORL=1 O_NOBATCH=1 O_NOFIFO=1 O_NOSSN=1 O_NOUG=1 O_NOLC=1 O_NOX11=1 O_QSORT=1
 	else
-		make
+		make O_NERD=1
 	fi
 }
 

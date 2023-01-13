@@ -4944,8 +4944,10 @@ static size_t handle_bookmark(const char *bmark, char *newpath)
 
 static void add_bookmark(char *path, char *newpath, int *presel)
 {
-	char *dir = xbasename(path);
-	dir = xreadline(dir[0] ? dir : NULL, messages[MSG_BM_NAME]);
+	printmsg("Enter new mark key:");
+	g_buf[0] = get_input(NULL);
+	g_buf[1] = '\0';
+	char *dir = g_buf;
 	if (dir && *dir) {
 		size_t r = mkpath(cfgpath, toks[TOK_BM], newpath);
 

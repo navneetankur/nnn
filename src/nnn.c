@@ -4924,11 +4924,14 @@ static size_t handle_bookmark(const char *bmark, char *newpath)
 	r = FALSE;
 	if (fd == ',') /* Visit marked directory */
 		bmark ? xstrsncpy(newpath, bmark, PATH_MAX) : (r = MSG_NOT_SET);
-	else if (fd == '\r') { /* Visit bookmarks directory */
-		mkpath(cfgpath, toks[TOK_BM], newpath);
-		g_state.selbm = 1;
-	} else if (!get_kv_val(bookmark, newpath, fd, maxbm, NNN_BMS))
-		r = MSG_INVALID_KEY;
+	else {
+		printmsg("Enter mark key:");
+		fd = get_input(NULL);
+		char input[2] = {fd, '\0'};
+		mkpath(cfgpath, toks[TOK_BM], g_buf);
+		mkpath(g_buf, input, g_buf);
+		xstrsncpy(newpath, g_buf, PATH_MAX);
+	}
 
 	if (!r && chdir(newpath) == -1) {
 		r = MSG_ACCESS;

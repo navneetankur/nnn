@@ -7821,6 +7821,7 @@ nochange:
 			goto begin;
 		case SEL_COMMAND:
 		{
+			setexports();
 			char *cmdline = xreadline(NULL,":");
 			DPRINTF_S(cmdline);
 			if(strncmp(cmdline, "cd ", 3) != 0) { //not cd

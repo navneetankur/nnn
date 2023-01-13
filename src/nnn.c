@@ -7823,7 +7823,7 @@ nochange:
 		{
 			char *cmdline = xreadline(NULL,":");
 			DPRINTF_S(cmdline);
-			if(strncmp(cmdline, "cd ", 3)) { //not cd
+			if(strncmp(cmdline, "cd ", 3) != 0) { //not cd
 				int cmd_ret = spawn(shell, "-c", cmdline, NULL, F_CLI);
 				if(cmd_ret != 0) {
 					//reusing cmdline buffer here.

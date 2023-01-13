@@ -4930,7 +4930,11 @@ static size_t handle_bookmark(const char *bmark, char *newpath)
 		char input[2] = {fd, '\0'};
 		mkpath(cfgpath, toks[TOK_BM], g_buf);
 		mkpath(g_buf, input, g_buf);
-		xstrsncpy(newpath, g_buf, PATH_MAX);
+		struct stat sbuf;
+		int x = lstat (g_buf, &sbuf);
+		if (x == 0 && S_ISLNK(sbuf.st_mode)) {
+			realpath(g_buf, newpath);
+		}
 	}
 
 	if (!r && chdir(newpath) == -1) {

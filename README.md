@@ -1,14 +1,14 @@
-Forked changes: 
-Added ability to run shell command inside nnn by `:` key.
-Make bookmark to dir work on only one character like in vim.
-Change some keymappings, to be more like vim.
+Forked changes:   
+Added ability to run shell command inside nnn by `:` key.  
+Make bookmark to dir work on only one character like in vim.  
+Change some keymappings, to be more like vim.  
 Warning: Text in help page displayed on '?' displays old mappings. New mapping is present in nnn.h
 
-example
-`:mkdir "new folder"`
-`:cd new folder`
-Commands other than cd is passed to shell.
-cd command's argument should not be in quotes.
+example  
+`:mkdir "new folder"`  
+`:cd new folder`  
+Commands other than cd is passed to shell.  
+cd command's argument should not be in quotes.  
 
 
 <h3 align="center"><img src="misc/logo/logo-128x128.png" alt="nnn"><br>nnn - <i>Supercharge your productivity!</i></h3>

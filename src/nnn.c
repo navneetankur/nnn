@@ -2422,9 +2422,7 @@ static void opstr(char *buf, char *op)
 
 static bool rmmulstr(char *buf)
 {
-	char r = confirm_force(TRUE);
-	if (!r)
-		return FALSE;
+	char r = 'f';
 
 	if (!g_state.trash)
 		snprintf(buf, CMD_LEN_MAX, "xargs -0 sh -c 'rm -%cr \"$0\" \"$@\" < /dev/tty' < %s",

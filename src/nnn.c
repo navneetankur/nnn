@@ -2439,14 +2439,8 @@ static bool rmmulstr(char *buf)
 /* Returns TRUE if file is removed, else FALSE */
 static bool xrm(char * const fpath)
 {
-	char r = confirm_force(FALSE);
-	if (!r)
-		return FALSE;
-
 	if (!g_state.trash) {
-		char rm_opts[] = "-ir";
-
-		rm_opts[1] = r;
+		char rm_opts[] = "-fr";
 		spawn("rm", rm_opts, fpath, NULL, F_NORMAL | F_CHKRTN);
 	} else
 		spawn(utils[(g_state.trash == 1) ? UTIL_TRASH_CLI : UTIL_GIO_TRASH],

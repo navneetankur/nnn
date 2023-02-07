@@ -1,6 +1,7 @@
 Forked changes:   
 Added ability to run shell command inside nnn by `:` key.  
 Make bookmark to dir work on only one character like in vim.  
+Don't confirm on file removal.  
 Change some keymappings, to be more like vim.  
 Warning: Text in help page displayed on '?' displays old mappings. New mapping is present in nnn.h
 

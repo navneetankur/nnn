@@ -104,6 +104,7 @@ Runs on the Pi, [Termux](https://www.youtube.com/embed/AbaauM7gUJw) (Android), L
   - FreeDesktop compliant trash utility integration
   - Cross-dir file/all/range selection
   - Create (with parents), rename, duplicate files and dirs
+  - Create new file or directory (tree) on startup
   - Batch renamer for selection or dir
   - List input stream of file paths from stdin or plugin
   - Copy (as), move (as), delete, archive, link selection
@@ -117,7 +118,7 @@ Runs on the Pi, [Termux](https://www.youtube.com/embed/AbaauM7gUJw) (Android), L
 
 ## Quickstart
 
-1. [Install](https://github.com/jarun/nnn/wiki/Usage) `nnn` and the deps you need.
+1. [Install](https://github.com/jarun/nnn/wiki/Usage) `nnn` and the dependencies you need.
 2. The desktop opener is default. Use `-e` to open text files in the terminal. Optionally [open detached](https://github.com/jarun/nnn/wiki/Basic-use-cases#detached-text).
 3. Configure [`cd` on quit](https://github.com/jarun/nnn/wiki/Basic-use-cases#configure-cd-on-quit).
 4. [Sync subshell `$PWD`](https://github.com/jarun/nnn/wiki/Basic-use-cases#sync-subshell-pwd) to `nnn`.
@@ -155,6 +156,7 @@ Don't memorize! Arrows, <kbd>/</kbd>, <kbd>q</kbd> suffice. <kbd>Tab</kbd> creat
 - LinuxLinks [[1](https://www.linuxlinks.com/nnn-fast-and-flexible-file-manager/)] [[2](https://www.linuxlinks.com/bestconsolefilemanagers/)] [[3](https://www.linuxlinks.com/excellent-system-tools-nnn-portable-terminal-file-manager/)]
 - [Linux Magazine; FOSSPicks](https://www.linux-magazine.com/Issues/2017/205/FOSSPicks/(offset)/15)
 - [Make Tech Easier](https://www.maketecheasier.com/nnn-file-manager-terminal/)
+- [Opensource.com](https://opensource.com/article/22/12/linux-file-manager-nnn)
 - [Open Source For You](https://www.opensourceforu.com/2019/12/nnn-this-feature-rich-terminal-file-manager-will-enhance-your-productivity/)
 - [PCLinuxOS Magazine Issue June 2021](https://pclosmag.com/html/Issues/202106/page08.html)
 - [Suckless Rocks](https://suckless.org/rocks/)
@@ -164,7 +166,7 @@ Don't memorize! Arrows, <kbd>/</kbd>, <kbd>q</kbd> suffice. <kbd>Tab</kbd> creat
 
 ## Developers
 
-- [Arun Prakash Jana](https://github.com/jarun) (Copyright © 2016-2022)
+- [Arun Prakash Jana](https://github.com/jarun) (Copyright © 2016-2023)
 - [0xACE](https://github.com/0xACE)
 - [Anna Arad](https://github.com/annagrram)
 - [KlzXS](https://github.com/KlzXS)
@@ -174,4 +176,4 @@ Don't memorize! Arrows, <kbd>/</kbd>, <kbd>q</kbd> suffice. <kbd>Tab</kbd> creat
 - [Sijmen J. Mulder](https://github.com/sjmulder)
 - and other contributors
 
-Visit the [ToDo list](https://github.com/jarun/nnn/issues/1454) to contribute or see the features in progress.
+Visit the [Tracker](https://github.com/jarun/nnn/issues/1546) thread for a list of features in progress and anything up for grabs. Feel free to [discuss](https://github.com/jarun/nnn/discussions) new ideas or enhancement requests.

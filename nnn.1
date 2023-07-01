@@ -1,4 +1,4 @@
-.Dd Nov 24, 2022
+.Dd Apr 13, 2023
 .Dt NNN 1
 .Os
 .Sh NAME
@@ -29,9 +29,23 @@ subshell spawning and much more. It remains a simple and
 efficient file manager that stays out of your way.
 .Pp
 .Nm
-opens the current working directory by default if
+opens the current working directory if
 .Ar PATH
-is not specified.
+is not specified. If
+.Ar PATH
+is specified and it exists,
+.Nm
+will open it. If the
+.Ar PATH
+doesn't exist and ends with a \fB/\fR,
+.Nm
+will attempt to create the directory tree and open it. Otherwise,
+.Ar PATH
+is considered a path to a regular file and
+.Nm
+attempts to create the complete directory tree to the file, open
+the parent directory and prompt to create the new file in it with
+the base filename.
 .Sh KEYBINDS
 .Pp
 Press
@@ -45,7 +59,7 @@ to see the list of keybinds.
 supports the following options:
 .Pp
 .Fl a
-        auto-setup temporary NNN_FIFO (described in ENVIRONMENT section)
+        auto-setup temporary \fBNNN_FIFO\fR (described in \fIENVIRONMENT\fR section)
 .Pp
 .Fl A
         disable directory auto-enter on unique filter match
@@ -303,6 +317,11 @@ To edit the selection use the _edit selection_ key. Editing doesn't end the
 selection mode. You can add more files to the selection and edit the list
 again. If no file is selected in the current session, this option attempts
 to list the selection file.
+.Pp
+.Nm
+can show the total size of non-filtered selected files listed in a
+directory. For directories, only the size of the directory is added by
+default. To add the size of the contents of a directory, switch to du mode.
 .Sh FIND AND LIST
 There are two ways to search and list:
 .Pp
@@ -350,17 +369,17 @@ selected entries from the listed results.
 .Sh BOOKMARKS
 There are 2 ways (can be used together) to manage bookmarks.
 .Pp
-(1) Bookmark keys: See \fINNN_BMS\fR under \fIENVIORNMENT\fR section on how to set
+(1) Bookmark keys: See \fBNNN_BMS\fR under \fIENVIORNMENT\fR section on how to set
     bookmark keys.
 
-    The select bookmark key \fIb\fR lists all the bookmark keys set in \fINNN_BMS\fR
+    The select bookmark key \fIb\fR lists all the bookmark keys set in \fBNNN_BMS\fR
     in the bookmarks prompt.
 .Pp
 (2) Symlinked bookmarks: A symlinked bookmark to the current directory can
     be created with the \fIB\fR key (or manually under ~/.config/nnn/bookmarks).
 
     Pressing 'Enter' at the bookmarks prompt takes to this directory.
-    If \fINNN_BMS\fR is not set, the select bookmark key directly opens it.
+    If \fBNNN_BMS\fR is not set, the select bookmark key directly opens it.
 .Pp
 On entering a bookmark, the directory where the select bookmark key was
 pressed is set as the previous directory. Press '-' to return to it.
@@ -409,14 +428,14 @@ separated by \fI;\fR:
     To assign keys to arbitrary non-background cli commands and invoke like
     plugins, add \fB!\fR before the command.
 .Bd -literal
-    export NNN_PLUG='x:!chmod +x $nnn;g:!git log;s:!smplayer $nnn'
+    export NNN_PLUG='x:!chmod +x "$nnn";g:!git log;s:!smplayer "$nnn"'
 
     To pick and run an unassigned plugin, press \fBEnter\fR at the plugin prompt.
     To run a plugin at startup, use the option `-P` followed by the plugin key.
 
     NOTES:
-    1. Use single quotes for $NNN_PLUG so $nnn is not interpreted
-    2. $nnn must be the last argument (if used) to run a \fIcommand as plugin\fR
+    1. Place $nnn (or exported variables) in double quotes (\fB"$nnn"\fR)
+    2. Use single quotes for $NNN_PLUG so "$nnn" is not interpreted
     3. (Again) add \fB!\fR before the command
     4. To disable directory refresh after running a \fIcommand as plugin\fR,
        prefix with \fB-!\fR
@@ -425,33 +444,33 @@ separated by \fI;\fR:
 
         export NNN_PLUG='y:-!sync*'
 
-    6. To run a \fIGUI app as plugin\fR, add a \fB&\fR after \fB!\fR
-       Note: \fI$nnn\fR must be the last argument in this case.
+    6. To run a \fIGUI app as plugin\fR, add a \fB&\fR after \fB!\fR.
 
-        export NNN_PLUG='m:-!&mousepad $nnn'
+        export NNN_PLUG='m:-!&mousepad "$nnn"'
 
     7. To show the output of run-and-exit commands which do not need user input,
        add \fB|\fR (pipe) after \fB!\fR
        Note: This option is incompatible with \fB&\fR (terminal output is masked
-       for GUI programs) and ignores \fB*\fR (output is already paged for user)
+       for GUI programs) and ignores \fB*\fR (output is already paged for user).
 
-        export NNN_PLUG='m:-!|mediainfo $nnn;t:-!|tree -ps;l:-!|ls -lah --group-directories-first'
+        export NNN_PLUG='m:-!|mediainfo "$nnn";t:-!|tree -ps;l:-!|ls -lah --group-directories-first'
 
     EXAMPLES:
     ------------------------------------ + -------------------------------------------------
                 Key:Command              |                   Description
     ------------------------------------ + -------------------------------------------------
-    c:!convert $nnn png:- | xclip -sel \ | Copy image to clipboard
-       clipboard -t image/png*           |
-    e:-!sudo -E vim $nnn*                | Edit file as root in vim
+    c:!convert "$nnn" png:- | xclip      | Copy image to clipboard
+       -sel clipboard -t image/png*      |
+    C:!cp -rv "$nnn" "$nnn".cp*          | Create a copy of the hovered file
+    e:-!sudo -E vim "$nnn"*              | Edit file as root in vim
     g:-!git diff                         | Show git diff
-    h:-!hx $nnn*                         | Open hovered file in hx hex editor
-    k:-!fuser -kiv $nnn*                 | Interactively kill process(es) using hovered file
+    h:-!hx "$nnn"*                       | Open hovered file in hx hex editor
+    k:-!fuser -kiv "$nnn"*               | Interactively kill process(es) using hovered file
     l:-!git log                          | Show git log
     n:-!vi /home/user/Dropbox/dir/note*  | Take quick notes in a synced file/dir of notes
-    p:-!less -iR $nnn*                   | Page through hovered file in less
-    s:-!&smplayer -minigui $nnn          | Play hovered media file, even unfinished download
-    x:!chmod +x $nnn                     | Make the hovered file executable
+    p:-!less -iR "$nnn"*                 | Page through hovered file in less
+    s:-!&smplayer -minigui "$nnn"        | Play hovered media file, even unfinished download
+    x:!chmod +x "$nnn"                   | Make the hovered file executable
     y:-!sync*                            | Flush cached writes
     ------------------------------------ + -------------------------------------------------
 
@@ -521,6 +540,11 @@ separated by \fI;\fR:
     NOTE: Non-default formats may require a third-party utility.
 .Ed
 .Pp
+\fBNNN_ARCHMNT:\fR optional archive mounter utility (default: archivemount).
+.Bd -literal
+    export NNN_ARCHIVE='fuse-archive'
+.Ed
+.Pp
 \fBNNN_SSHFS:\fR specify custom sshfs command with options:
 .Bd -literal
     export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
@@ -542,6 +566,9 @@ separated by \fI;\fR:
 .Ed
 .Pp
 \fBNNN_SEL:\fR absolute path to custom selection file.
+.Bd -literal
+    export NNN_SEL='/tmp/.sel'
+.Ed
 .Pp
 \fBNNN_FIFO:\fR path of a named pipe to write the hovered file path:
 .Bd -literal

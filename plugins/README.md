@@ -62,7 +62,7 @@ Plugins extend the capabilities of `nnn`. They are _executable_ scripts (or bina
 | [togglex](togglex) | Toggle executable mode for selection [✓] | sh | chmod |
 | [umounttree](umounttree) | Unmount a remote mountpoint from within | sh | fusermount |
 | [upload](upload) | Upload to Firefox Send or ix.io (text) or file.io (bin) | sh | [ffsend](https://github.com/timvisee/ffsend), curl, jq, tr |
-| [wallpaper](wall) | Set wallpaper or change colorscheme | sh | nitrogen/pywal |
+| [wallpaper](wallpaper) | Set wallpaper or change colorscheme | sh | nitrogen/pywal |
 | [x2sel](x2sel) | Copy file list from system clipboard to selection | sh | _see in-file docs_ |
 | [xdgdefault](xdgdefault) | Set the default app for the hovered file type | sh | xdg-utils, fzf/dmenu |
 
@@ -75,11 +75,11 @@ Notes:
 
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [Skip directory refresh after running a plugin](#skip-directory-refresh-after-running-a-plugin)
-- [Running commands as plugin](#running-commands-as-plugin)
-  - [Skip user confirmation after command execution](#skip-user-confirmation-after-command-execution)
-  - [Run a GUI app as plugin](#run-a-gui-app-as-plugin)
-  - [Page non-interactive command output](#page-non-interactive-command-output)
+  - [Skip directory refresh after running a plugin](#skip-directory-refresh-after-running-a-plugin--)
+- [Running commands as plugin](#running-commands-as-plugin-)
+  - [Skip user confirmation after command execution](#skip-user-confirmation-after-command-execution-)
+  - [Run a GUI app as plugin](#run-a-gui-app-as-plugin-)
+  - [Page non-interactive command output](#page-non-interactive-command-output-)
   - [Some useful key-command examples](#some-useful-key-command-examples)
 - [Access level of plugins](#access-level-of-plugins)
 - [Create your own plugins](#create-your-own-plugins)
@@ -93,7 +93,7 @@ Notes:
 The following command installs or updates (after backup) all plugins:
 
 ```sh
-curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
 ```
 
 Plugins are installed to `${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins`.
@@ -119,7 +119,7 @@ If the plugins list gets too long, try breaking them up into sections:
 ```
 NNN_PLUG_PERSONAL='g:personal/convert2zoom;p:personal/echo'
 NNN_PLUG_WORK='j:work/prettyjson;d:work/foobar'
-NNN_PLUG_INLINE='e:!go run $nnn*'
+NNN_PLUG_INLINE='e:!go run "$nnn"*'
 NNN_PLUG_DEFAULT='1:ipinfo;p:preview-tui;o:fzz;b:nbak'
 NNN_PLUG="$NNN_PLUG_PERSONAL;$NNN_PLUG_WORK;$NNN_PLUG_DEFAULT;$NNN_PLUG_INLINE"
 export NNN_PLUG
@@ -141,10 +141,10 @@ export NNN_PLUG='p:-plugin'
 
 ## Running commands as plugin [`!`]
 
-To assign keys to arbitrary non-background cli commands and invoke like plugins, add `!` (underscore) before the command.
+To assign keys to arbitrary non-background cli commands and invoke like plugins, add `!` before the command.
 
 ```sh
-export NNN_PLUG='x:!chmod +x $nnn;g:!git log;s:!smplayer $nnn'
+export NNN_PLUG='x:!chmod +x "$nnn";g:!git log;s:!smplayer "$nnn"'
 ```
 
 Now <kbd>;x</kbd> can be used to make a file executable, <kbd>;g</kbd> can be used to the git log of a git project directory, <kbd>;s</kbd> can be used to preview a partially downloaded media file.
@@ -154,37 +154,34 @@ Now <kbd>;x</kbd> can be used to make a file executable, <kbd>;g</kbd> can be us
 `nnn` waits for user confirmation (the prompt `Press Enter to continue`) after it executes a command as plugin (unlike plugins which can add a `read` to wait). To skip this, add a `*` after the command.
 
 ```sh
-export NNN_PLUG='s:!smplayer $nnn*;n:-!vim /home/vaio/Dropbox/Public/synced_note*'
+export NNN_PLUG='s:!smplayer "$nnn"*;n:-!vim /home/vaio/Dropbox/Public/synced_note*'
 ```
 
 Now there will be no prompt after <kbd>;s</kbd> and <kbd>;n</kbd>.
 
-Note: Do not use `*` with programs those run and exit e.g. cat.
+Note: Do not use `*` with programs that run and exit e.g. cat.
 
 #### Run a GUI app as plugin [`&`]
 
 To run a GUI app as plugin, add a `&` after `!`.
 
 ```sh
-export NNN_PLUG='m:-!&mousepad $nnn'
+export NNN_PLUG='m:-!&mousepad "$nnn"'
 ```
-
-Note: `$nnn` must be the last argument in this case.
 
 #### Page non-interactive command output [`|`]
 
 To show the output of run-and-exit commands which do not need user input, add `|` (pipe) after `!`.
 
 ```sh
-export NNN_PLUG='m:-!|mediainfo $nnn;t:-!|tree -ps;l:-!|ls -lah --group-directories-first'
+export NNN_PLUG='m:-!|mediainfo "$nnn";t:-!|tree -ps;l:-!|ls -lah --group-directories-first'
 ```
 
 This option is incompatible with `&` (terminal output is masked for GUI programs) and ignores `*` (output is already paged for user).
 
 Notes:
-
-1. Use single quotes for `$NNN_PLUG` so `$nnn` is not interpreted
-2. `$nnn` must be the last argument (if used) to run a _command as plugin_
+1. Place `$nnn` (or exported variables) in double quotes (**`"$nnn"`**)
+2. Use single quotes for `$NNN_PLUG` so `"$nnn"` is not interpreted
 3. (_Again_) add `!` before the command
 4. To disable directory refresh after running a _command as plugin_, prefix with `-!`
 
@@ -192,16 +189,17 @@ Notes:
 
 | Key:Command | Description |
 |---|---|
-| `c:!convert $nnn png:- \| xclip -sel clipboard -t image/png*` | Copy image to clipboard |
-| `e:-!sudo -E vim $nnn*` | Edit file as root in vim |
+| `c:!convert "$nnn" png:- \| xclip -sel clipboard -t image/png*` | Copy image to clipboard |
+| `C:!cp -rv "$nnn" "$nnn".cp` | Create a copy of the hovered file |
+| `e:-!sudo -E vim "$nnn"*` | Edit file as root in vim |
 | `g:-!git diff` | Show git diff |
-| `h:-!hx $nnn*` | Open hovered file in [hx](https://github.com/krpors/hx) hex editor |
-| `k:-!fuser -kiv $nnn*` | Interactively kill process(es) using hovered file |
+| `h:-!hx "$nnn"*` | Open hovered file in [hx](https://github.com/krpors/hx) hex editor |
+| `k:-!fuser -kiv "$nnn"*` | Interactively kill process(es) using hovered file |
 | `l:-!git log` | Show git log |
 | `n:-!vi /home/user/Dropbox/dir/note*` | Take quick notes in a synced file/dir of notes |
-| `p:-!less -iR $nnn*` | Page through hovered file in less |
-| `s:-!&smplayer -minigui $nnn` | Play hovered media file, even unfinished download |
-| `x:!chmod +x $nnn` | Make the hovered file executable |
+| `p:-!less -iR "$nnn"*` | Page through hovered file in less |
+| `s:-!&smplayer -minigui "$nnn"` | Play hovered media file, even unfinished download |
+| `x:!chmod +x "$nnn"` | Make the hovered file executable |
 | `y:-!sync*` | Flush cached writes |
 
 ## Access level of plugins
@@ -214,6 +212,7 @@ When `nnn` executes a plugin, it does the following:
     3. `$3`: The picker mode output file (`-` for stdout) if `nnn` is executed as a file picker.
 - Sets the environment variable `NNN_PIPE` used to control `nnn` active directory.
 - Sets the environment variable `NNN_INCLUDE_HIDDEN` to `1` if hidden files are active, `0` otherwise.
+- Sets the environment variable `NNN_PREFER_SELECTION` to `1` if user prefers to use selection (see nnn's `-u` flag), `0` otherwise.
 - Exports the [special variables](https://github.com/jarun/nnn/wiki/Concepts#special-variables).
 
 Plugins can also read the `.selection` file in the config directory.

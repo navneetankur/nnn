@@ -219,7 +219,7 @@ static struct key bindings[] = {
 	{ ' ',            SEL_SEL },
 	{ '+',            SEL_SEL },
 	/* Toggle select multiple files */
-	{ 'm',            SEL_SELMUL },
+	{ 'M',            SEL_SELMUL },
 	/* Select all files in current dir */
 	{ 'a',            SEL_SELALL },
 	/* Invert selection in current dir */

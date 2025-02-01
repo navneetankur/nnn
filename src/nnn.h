@@ -232,6 +232,7 @@ static struct key bindings[] = {
 	{ CONTROL('P'),   SEL_CP },
 	/* Move from selection buffer */
 	{ CONTROL('V'),   SEL_MV },
+	{ 'V',   SEL_MV },
 	/* Copy/move from selection buffer and rename */
 	{ 'w',            SEL_CPMVAS },
 	{ CONTROL('W'),   SEL_CPMVAS },
